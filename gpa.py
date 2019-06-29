@@ -38,7 +38,7 @@ class Gpa(object):
             table = table.reindex(table.index.drop(0)).reset_index(drop=True)
             table.columns.name = None
             #To write Excel
-            table.to_excel('output'+str(i)+'.xlsx',header=True,index=False)
+            #table.to_excel('output'+str(i)+'.xlsx',header=True,index=False)
             workbook = xlrd.open_workbook('output'+str(i)+'.xlsx')
             worksheet = workbook.sheet_by_name('Sheet1')
             num_rows = 5 #worksheet.nrows - 1
