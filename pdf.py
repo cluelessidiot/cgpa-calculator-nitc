@@ -8,6 +8,7 @@ row_array = []
 row_array2=[]
 semesterCount=0
 for table in tables:
+    print(table)
     table.columns = table.iloc[0]
     table = table.reindex(table.index.drop(0)).reset_index(drop=True)
     table.columns.name = None
@@ -27,25 +28,7 @@ for table in tables:
         i=i+1
 gradesArray = []
 creditsArray = []
-for i in range (len(row_array)):
-    #print(row[i].split("'"))
-    #k=string(row[i])
-    if row_array[i].value!='':
-        if row_array[i].value=='Grade':
-            semesterCount+=1
-            gradesArray.append(int(semesterCount))
-            creditsArray.append('D')
-        else:    
-            print(row_array[i].value)
-            gradeSingle=str(row_array[i].value)
-            creditSingle=int(row_array2[i].value)
-            gradesArray.append(gradeSingle)
-            creditsArray.append(creditSingle)
-    #gradesArray+=row_array[i].value
-    #creditsArray+=row_array2[i].value
-print(gradesArray)
-print(creditsArray)
-print(semesterCount)
+
 
 
 #creates an array to store all the rows

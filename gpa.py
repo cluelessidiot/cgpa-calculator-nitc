@@ -18,6 +18,14 @@ class Gpa(object):
     creditCount=0
     gradeCount=0
     semesterCount=0
+    semesterWiseSubject=[]
+    subjectInSemester=0
+    totalCredit=0
+    totalSubject=0
+    gradeCreditPair= None
+    sgpa=0
+    semesterCredit=0
+
 
     def getPdf(self):
         tables = wrapper.read_pdf("qw.pdf",multiple_tables=True,pages='all',encoding='utf-8',spreadsheet=True)
@@ -25,18 +33,19 @@ class Gpa(object):
         row_array = []
         row_array2=[]
         for table in tables:
+            print("-----------")
             table.columns = table.iloc[0]
             table = table.reindex(table.index.drop(0)).reset_index(drop=True)
             table.columns.name = None
             #To write Excel
             table.to_excel('output'+str(i)+'.xlsx',header=True,index=False)
-            workbook = xlrd.open_workbook('output2.xlsx')
+            workbook = xlrd.open_workbook('output'+str(i)+'.xlsx')
             worksheet = workbook.sheet_by_name('Sheet1')
             num_rows = 5 #worksheet.nrows - 1
             curr_row = 4
             while curr_row < num_rows:
                 row = worksheet.col(curr_row)
-                #print(row)
+                print(row)
                 row2 = worksheet.col(curr_row-1)
                 row_array += row
                 row_array2+= row2
@@ -44,26 +53,36 @@ class Gpa(object):
                 i=i+1
 
         for i in range (len(row_array)):
-            #print(row[i].split("'"))
-            #k=string(row[i])
-            if row_array[i].value!='':
-                if row_array[i].value=='Grade':
-                    self.semesterCount+=1
-                    self.gradesArray.append(int(self.semesterCount))
-                    self.creditsArray.append('D')
-                else:    
-                    print(row_array[i].value)
-                    gradeSingle=str(row_array[i].value)
-                    creditSingle=int(row_array2[i].value)
-                    self.gradesArray.append(gradeSingle)
-                    self.creditsArray.append(creditSingle)
+            if row_array[i].value!="P":
+                if row_array[i].value!='':
+                    if row_array[i].value=='Grade':
+                        self.semesterCount+=1
+                        if self.subjectInSemester!=0:
+                            self.semesterWiseSubject.append(self.subjectInSemester)
+                        self.subjectInSemester=0
+                    else:
+                        self.subjectInSemester+=1
+                        gradeSingle=str(row_array[i].value)
+                        creditSingle=int(row_array2[i].value)
+                        self.gradesArray.append(gradeSingle)
+                        self.creditsArray.append(creditSingle)
+            else:
+                pass            
+        self.semesterWiseSubject.append(self.subjectInSemester)    
     #gradesArray+=row_array[i].value
     #creditsArray+=row_array2[i].value
         print(self.gradesArray)
         print(self.creditsArray)
     
     def parser(self):
-        print(self.gradesArray[self.gradeCount])
+        #print(self.gradesArray[self.gradeCount])
+        if self.creditsArray[self.creditCount]=='D':
+            self.gradeCount+=1
+            self.creditCount+=1            
+        a=[self.gradesArray[self.gradeCount],self.creditsArray[self.creditCount]]
+        self.gradeCount+=1
+        self.creditCount+=1
+        return a
         pass
         
 
@@ -89,8 +108,8 @@ class Gpa(object):
         pass              
     def getGradeData(self):
         # To calculate grade for two scale,one is for 5.0 and other one for 10.0
-        grade1 = {'s':10,'a':9,'b':8,'c':7,'d':6,'e':5,'f':0}
-        x=grade1[self.subData]
+        grade1 = {'S':10,'A':9,'B':8,'C':7,'D':6,'E':5,'F':4}
+        x=grade1[str(self.gradeCreditPair[0])]
         return x 
     def getCredits(self):
         "get credit value"
@@ -107,44 +126,41 @@ class Gpa(object):
                 
     def calculateGpa(self):
         "Method to calculate Gpa "
-        while self.initCourse!=self.arg1:
-            self.initCourse=self.initCourse+1
-            self.getCredits()
-            self.initgetCredit = self.credits
-            self.getSubjectData()
-            #type(self.getSubjectData())
-            self.temp = self.initgetCredit*self.getGradeData()+self.temp
-            self.totalCredits=self.totalCredits+self.initgetCredit
+        j=0
+        subjectCount=self.semesterWiseSubject[j]
+        for i in range(len(self.gradesArray)):
+            print(subjectCount)
+            if subjectCount==0:
+                gpa = round((self.sgpa+.0)/(self.semesterCredit+.0),2)
+                print "you have registered for semester:"+str(j)+" and credits "+str(self.semesterCredit)+" "+"and you have acquired GPA:\""+str(gpa)+"\""
+                j+=1
+                subjectCount=self.semesterWiseSubject[j]
+                self.sgpa=0
+                self.semesterCredit=0
+            self.gradeCreditPair=self.parser()
+            #print(self.gradeCreditPair)
+            self.temp = self.gradeCreditPair[1]*self.getGradeData()+self.temp
+            self.totalCredits=self.totalCredits+self.gradeCreditPair[1]
+            self.sgpa = self.sgpa+self.gradeCreditPair[1]*self.getGradeData()
+            self.semesterCredit=self.semesterCredit+self.gradeCreditPair[1]
+            subjectCount-=1
             
         gpa = round((self.temp+.0)/(self.totalCredits+.0),2)
         print "you have registered for total credits:"+" "+str(self.totalCredits)+" "+"and you have acquired GPA:\""+str(gpa)+"\""
         pass
     
     def cgpa(self):
-        self.getPdf()
-        self.parser()
-        print "Calculate your cgpa: "
-        f = open("a.txt", "r")
-        semesters = f.readline()                    # input("Enter how many semester cgpa has to be found of: " )
+        self.getPdf()                  # input("Enter how many semester cgpa has to be found of: " )
         counter = 0
         tempInit = 0
         tempTotalCredits = 0
-        while counter != semesters:
-                counter = counter+1
-                print "Please enter the details of the semester"+" "+str(counter)
-                self.getCourse()
-                self.calculateGpa()
-                tempInit = self.temp+tempInit
-                tempTotalCredits = tempTotalCredits + self.totalCredits
-                # re-assigning
-                self.arg1=0
-                self.initCourse =0
-                self.temp=0
-                self.totalCredits=0
-                print "\n"
+        print(self.semesterWiseSubject)
+        self.calculateGpa()
+        
+
                 
-        cgpa = round((tempInit+.0)/(tempTotalCredits+.0),2)
-        print "you have registered for total credits:"+" "+str(tempTotalCredits)+" "+"and you have acquired CGPA:\""+str(cgpa)+"\" "    
+        #cgpa = round((tempInit+.0)/(tempTotalCredits+.0),2)
+        #print "you have registered for total credits:"+" "+str(tempTotalCredits)+" "+"and you have acquired CGPA:\""+str(cgpa)+"\" "    
         pass
 
 
