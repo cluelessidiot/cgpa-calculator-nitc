@@ -1,0 +1,30 @@
+[                                       0                    1   2                  3
+0             Monsoon Semester 2016-2017  Roll NO : B160345CS NaN       Semester : I
+1         Sl.NO Course Code   CourseName        Credits Grade NaN  Attendance Result
+2     1 ZZ1003 BASIC ELECTRICAL SCIENCES                  3 E NaN             H PASS
+3                    2 ZZ1091 WORKSHOP I                  2 A NaN             H PASS
+4                       3 PH1001 PHYSICS                  3 D NaN             H PASS
+5                   4 PH1091 PHYSICS LAB                  1 A NaN             H PASS
+6                 5 MA1001 MATHEMATICS I                  3 D NaN             H PASS
+7      6 CS1001 FOUNDATIONS OF COMPUTING                  2 D NaN             N PASS
+8          7 ZZ1002 ENGINEERING GRAPHICS                  3 D NaN             H PASS
+9                                    NaN                  NaN NaN         SGPA  6.35
+10             Winter Semester 2016-2017  Roll NO : B160345CS NaN      Semester : II
+11        Sl.NO Course Code   CourseName        Credits Grade NaN  Attendance Result
+12           8 ZZ1093 PHYSICAL EDUCATION                  1 P NaN             N PASS
+13                  9 ZZ1092 WORKSHOP II                  2 B NaN             H PASS
+14               10 CY1094 CHEMISTRY LAB                  1 S NaN             H PASS
+15        11 ZZ1004 COMPUTER PROGRAMMING                  2 A NaN             N PASS
+16                   12 CY1001 CHEMISTRY                  3 A NaN             H PASS
+17              13 MA1002 MATHEMATICS II                  3 A NaN             H PASS
+18       14 ZZ1001 ENGINEERING MECHANICS                  3 C NaN             H PASS
+19  15 MS1001 PROFESSIONAL COMMUNICATION                  3 D NaN             H PASS
+20                                   NaN                  NaN NaN         SGPA  8.06
+21            Monsoon Semester 2017-2018  Roll NO : B160345CS NaN     Semester : III
+22        Sl.NO Course Code   CourseName        Credits Grade NaN  Attendance Result
+23     16 CS2091 LOGIC DESIGN LABORATORY                  3 S NaN             N PASS
+24     17 ZZ1095 NATIONAL SERVICE SCHEME                  1 P NaN             N PASS
+25      18 CS2092 PROGRAMMING LABORATORY                  3 C NaN             H PASS
+26  19 CS2002 FOUNDATIONS OF PROGRAMMING                  4 C NaN             H PASS
+27                20 CS2001 LOGIC DESIGN                  4 B NaN             H PASS
+28         21 EC2014 SIGNALS AND SYSTEMS                  3 C NaN             H PASS]
